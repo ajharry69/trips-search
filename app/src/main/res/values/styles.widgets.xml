@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="Widget.HavaTrips.TextInputLayout" parent="Widget.MaterialComponents.TextInputLayout.FilledBox">
+        <item name="errorEnabled">true</item>
+        <item name="helperTextEnabled">true</item>
+        <item name="android:layout_marginBottom">8dp</item>
+    </style>
+
+    <style name="Widget.HavaTrips.TextInputLayout.AutoCompleteTextView" parent="Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu">
+        <item name="errorEnabled">true</item>
+        <item name="helperTextEnabled">true</item>
+        <item name="android:layout_marginBottom">8dp</item>
+    </style>
+
+    <style name="Widget.HavaTrips.Toolbar" parent="Widget.MaterialComponents.Toolbar.Primary">
+        <item name="android:theme">@style/ThemeOverlay.HavaTrips.Toolbar</item>
+        <item name="popupTheme">@style/ThemeOverlay.HavaTrips.Popup.Toolbar</item>
+        <item name="android:layout_height">?attr/actionBarSize</item>
+        <item name="navigationIcon">@drawable/ic_navigate_back</item>
+        <item name="navigationContentDescription">@string/content_desc_navigate_back</item>
+    </style>
+
+    <style name="Widget.HavaTrips.AppBarLayout" parent="Widget.MaterialComponents.AppBarLayout.Primary">
+        <item name="android:theme">@style/ThemeOverlay.HavaTrips.AppBarLayout</item>
+    </style>
+
+    <style name="Widget.HavaTrips.RatingBar" parent="Widget.AppCompat.RatingBar.Small">
+        <item name="android:rating">1</item>
+        <item name="android:numStars">5</item>
+        <item name="android:stepSize">1</item>
+    </style>
+</resources>

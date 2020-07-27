@@ -1,0 +1,232 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="com.hava.trips.ui.search.TripSearchViewModel" />
+
+        <variable
+            name="viewModel"
+            type="TripSearchViewModel" />
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".ui.search.TripSearchFragment">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:padding="16dp"
+            app:layout_constraintBottom_toTopOf="@id/search"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:text="@string/trip_search"
+                android:textAppearance="?attr/textAppearanceHeadline3"
+                app:layout_constraintBottom_toTopOf="@+id/separator_1"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <View
+                android:id="@+id/separator_1"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/divider_thickness"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                android:background="?attr/colorOnSurface"
+                app:layout_constraintBottom_toTopOf="@id/keyword_container"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/title" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/keyword_container"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                android:hint="@string/keyword"
+                app:hintAnimationEnabled="true"
+                app:hintEnabled="true"
+                app:layout_constraintBottom_toTopOf="@+id/include_cancelled"
+                app:layout_constraintEnd_toEndOf="@id/separator_1"
+                app:layout_constraintStart_toStartOf="@id/separator_1"
+                app:layout_constraintTop_toBottomOf="@+id/separator_1">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/keyword"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:selectAllOnFocus="true"
+                    android:singleLine="true"
+                    android:text="@{viewModel.observableFilterParams.keyword}" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <Switch
+                android:id="@+id/include_cancelled"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                android:checked="@{viewModel.observableFilterParams.includeCancelled}"
+                app:layout_constraintBottom_toTopOf="@+id/title_distance"
+                app:layout_constraintStart_toStartOf="@+id/keyword_container"
+                app:layout_constraintTop_toBottomOf="@+id/keyword_container"
+                tools:checked="false" />
+
+            <TextView
+                android:id="@+id/include_cancelled_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:labelFor="@id/include_cancelled"
+                android:text="@string/include_cancelled_trips"
+                android:textAppearance="?attr/textAppearanceBody1"
+                app:layout_constraintBottom_toBottomOf="@id/include_cancelled"
+                app:layout_constraintStart_toEndOf="@id/include_cancelled"
+                app:layout_constraintTop_toTopOf="@id/include_cancelled" />
+
+            <TextView
+                android:id="@+id/title_distance"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="4dp"
+                android:layout_marginBottom="8dp"
+                android:text="@string/distance_title"
+                android:textAppearance="?attr/textAppearanceHeadline5"
+                app:layout_constraintBottom_toTopOf="@id/distance_options"
+                app:layout_constraintEnd_toStartOf="@+id/title_time"
+                app:layout_constraintStart_toStartOf="@+id/include_cancelled"
+                app:layout_constraintTop_toBottomOf="@id/include_cancelled" />
+
+            <TextView
+                android:id="@+id/title_time"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:text="@string/time_title"
+                android:textAppearance="?attr/textAppearanceHeadline5"
+                app:layout_constraintBaseline_toBaselineOf="@+id/title_distance"
+                app:layout_constraintEnd_toEndOf="@+id/keyword_container"
+                app:layout_constraintStart_toEndOf="@+id/title_distance" />
+
+            <RadioGroup
+                android:id="@+id/distance_options"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                android:checkedButton="@{viewModel.observableFilterParams.distance}"
+                app:layout_constraintBottom_toTopOf="@id/separator_2"
+                app:layout_constraintStart_toStartOf="@+id/title_distance"
+                app:layout_constraintTop_toBottomOf="@+id/title_distance"
+                tools:checkedButton="@id/distance_any">
+
+                <RadioButton
+                    android:id="@+id/distance_any"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/distance_any" />
+
+                <RadioButton
+                    android:id="@+id/distance_under_3"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/distance_under_3_km" />
+
+                <RadioButton
+                    android:id="@+id/distance_3_to_8"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/distance_3_to_8_km" />
+
+                <RadioButton
+                    android:id="@+id/distance_8_to_15"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/distance_8_to_15_km" />
+
+                <RadioButton
+                    android:id="@+id/distance_more_than_15"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/distance_more_than_15_km" />
+            </RadioGroup>
+
+            <RadioGroup
+                android:id="@+id/time_options"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:checkedButton="@{viewModel.observableFilterParams.time}"
+                app:layout_constraintBottom_toBottomOf="@+id/distance_options"
+                app:layout_constraintStart_toStartOf="@id/title_time"
+                app:layout_constraintTop_toTopOf="@+id/distance_options"
+                tools:checkedButton="@id/time_any">
+
+                <RadioButton
+                    android:id="@+id/time_any"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/time_any" />
+
+                <RadioButton
+                    android:id="@+id/time_under_5"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/time_under_5_min" />
+
+                <RadioButton
+                    android:id="@+id/time_5_to_10"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/time_5_to_10_min" />
+
+                <RadioButton
+                    android:id="@+id/time_10_to_20"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/time_10_to_20_min" />
+
+                <RadioButton
+                    android:id="@+id/time_more_than_20"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/time_more_than_20_min" />
+            </RadioGroup>
+
+            <View
+                android:id="@+id/separator_2"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/divider_thickness"
+                android:layout_marginTop="8dp"
+                android:background="?attr/colorOnSurface"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/distance_options" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/search"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="32dp"
+            android:text="@string/search"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

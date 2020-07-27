@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import
+            alias="K"
+            type="com.hava.trips.utils.Constants" />
+
+        <import type="com.hava.trips.ui.results.TripItemClickHandler" />
+
+        <import type="com.hava.trips.data.models.Trip" />
+
+        <variable
+            name="trip"
+            type="Trip" />
+    </data>
+
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        app:cardCornerRadius="4dp">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="@{(v) -> TripItemClickHandler.onOptionsViewClicked(v, trip.id)}">
+
+            <TextView
+                android:id="@+id/date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:layout_marginBottom="8dp"
+                android:gravity="center_vertical"
+                android:text="@{K.formattedDateAndOrTime(trip.requestDate, K.DATE_TIME_FORMAT)}"
+                android:textAppearance="?attr/textAppearanceBody1"
+                app:layout_constraintBottom_toTopOf="@id/source"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="8/26/2019 2:32 PM" />
+
+            <TextView
+                android:id="@+id/source"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                android:drawableStart="@drawable/ic_source_indicator"
+                android:drawablePadding="4dp"
+                android:gravity="center_vertical"
+                android:text="@{trip.pickupLocation}"
+                app:drawableTint="@color/source_drawable_tint"
+                app:layout_constraintBottom_toTopOf="@+id/destination"
+                app:layout_constraintStart_toStartOf="@id/date"
+                app:layout_constraintTop_toBottomOf="@id/date"
+                tools:text="South C, Nairobi" />
+
+            <TextView
+                android:id="@+id/destination"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                android:drawableStart="@drawable/ic_destination_indicator"
+                android:drawablePadding="4dp"
+                android:gravity="center_vertical"
+                android:text="@{trip.dropoffLocation}"
+                app:drawableTint="@color/destination_drawable_tint"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="@id/source"
+                app:layout_constraintTop_toBottomOf="@id/source"
+                tools:text="Eastleigh First Avenue" />
+
+            <TextView
+                android:id="@+id/cost"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="4dp"
+                android:gravity="center_vertical"
+                android:text="@{@string/cost(K.numberInFixedDPs(trip.cost), trip.costUnit)}"
+                android:textAppearance="?attr/textAppearanceBody2"
+                app:layout_constraintBaseline_toBaselineOf="@id/date"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="290 KES" />
+
+            <TextView
+                android:id="@+id/status"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:drawableEnd="@{trip.status == Trip.Status.COMPLETED ? @drawable/ic_status_completed : @drawable/ic_status_cancelled}"
+                android:drawablePadding="8dp"
+                android:gravity="center_vertical"
+                android:text="@{trip.status.name()}"
+                android:textAppearance="?attr/textAppearanceBody2"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="@id/options"
+                app:layout_constraintTop_toBottomOf="@id/options"
+                tools:drawableEnd="@drawable/ic_status_completed"
+                tools:text="COMPLETED" />
+
+            <RatingBar
+                android:id="@+id/ratingBar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:rating="@{trip.driverRating}"
+                app:layout_constraintEnd_toEndOf="@id/cost"
+                app:layout_constraintTop_toBottomOf="@id/cost"
+                tools:rating="3" />
+
+            <ImageButton
+                android:id="@+id/options"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="4dp"
+                android:adjustViewBounds="true"
+                android:background="@android:color/transparent"
+                android:contentDescription="@string/content_desc_trip_options"
+                android:onClick="@{(v) -> TripItemClickHandler.onOptionsViewClicked(v, trip.id)}"
+                android:scaleType="fitXY"
+                app:layout_constraintBottom_toTopOf="@id/status"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@id/source"
+                app:srcCompat="@drawable/ic_navigate_next" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </com.google.android.material.card.MaterialCardView>
+</layout>

@@ -1,0 +1,35 @@
+<resources>
+    <string name="app_name">Hava Trips</string>
+    <string name="trips_results">Trips (%1$d)</string>
+    <string name="trips_details">Trip Details</string>
+    <string name="content_desc_car_photo">Car photo</string>
+    <string name="sub_total_title">Sub Total</string>
+    <string name="duration_title">Duration</string>
+    <string name="distance_title">Distance</string>
+    <string name="content_desc_driver_photo">Driver photo</string>
+    <string name="trip_search">Trip Search</string>
+    <string name="time_more_than_20_min">More than 20 min</string>
+    <string name="time_10_to_20_min">10 to 20 min</string>
+    <string name="time_5_to_10_min">5 to 10 min</string>
+    <string name="time_under_5_min">Under 5 min</string>
+    <string name="time_any">Any</string>
+    <string name="distance_more_than_15_km">More than 15 km</string>
+    <string name="distance_8_to_15_km">8 to 15 km</string>
+    <string name="distance_3_to_8_km">3 to 8 km</string>
+    <string name="distance_under_3_km">Under 3 km</string>
+    <string name="distance_any">Any</string>
+    <string name="time_title">Time</string>
+    <string name="include_cancelled_trips">Include cancelled trips</string>
+    <string name="keyword">Keyword</string>
+    <string name="search">Search</string>
+    <string name="content_desc_trip_options">trip options</string>
+    <string name="cost">%1$s %2$s</string>
+    <string name="distance">%1$s %2$s</string>
+    <string name="time">%1$s %2$s</string>
+    <string name="car_identity">%1$s %2$s</string>
+    <string name="blank_keyword_error">required field</string>
+    <string name="status_searching_trips">Searching trips…</string>
+    <string name="status_fetching_remote_trips">Fetching trips from internet…</string>
+    <string name="status_trips_empty">No trip(s) found with the search parameters…</string>
+    <string name="content_desc_navigate_back">go back</string>
+</resources>

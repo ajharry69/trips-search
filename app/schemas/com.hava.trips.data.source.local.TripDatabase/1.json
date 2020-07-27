@@ -1,0 +1,269 @@
+{
+  "formatVersion": 1,
+  "database": {
+    "version": 1,
+    "identityHash": "a97e5e6aa1f160ee5e03a396587fafb2",
+    "entities": [
+      {
+        "tableName": "trips",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER, `status` TEXT, `requestDate` TEXT, `pickupLocation` TEXT, `dropoffLocation` TEXT, `pickupDate` TEXT, `dropoffDate` TEXT, `type` TEXT, `driverName` TEXT, `driverPic` TEXT, `carMake` TEXT, `carModel` TEXT, `carNumber` TEXT, `carPic` TEXT, `durationUnit` TEXT, `distanceUnit` TEXT, `costUnit` TEXT, `pickupLat` REAL, `pickupLng` REAL, `dropoffLat` REAL, `dropoffLng` REAL, `driverId` INTEGER NOT NULL, `driverRating` INTEGER NOT NULL, `carYear` INTEGER NOT NULL, `duration` INTEGER NOT NULL, `distance` REAL NOT NULL, `cost` REAL NOT NULL, PRIMARY KEY(`id`))",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "status",
+            "columnName": "status",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "requestDate",
+            "columnName": "requestDate",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "pickupLocation",
+            "columnName": "pickupLocation",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "dropoffLocation",
+            "columnName": "dropoffLocation",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "pickupDate",
+            "columnName": "pickupDate",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "dropoffDate",
+            "columnName": "dropoffDate",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "type",
+            "columnName": "type",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "driverName",
+            "columnName": "driverName",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "driverPic",
+            "columnName": "driverPic",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "carMake",
+            "columnName": "carMake",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "carModel",
+            "columnName": "carModel",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "carNumber",
+            "columnName": "carNumber",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "carPic",
+            "columnName": "carPic",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "durationUnit",
+            "columnName": "durationUnit",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "distanceUnit",
+            "columnName": "distanceUnit",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "costUnit",
+            "columnName": "costUnit",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "pickupLat",
+            "columnName": "pickupLat",
+            "affinity": "REAL",
+            "notNull": false
+          },
+          {
+            "fieldPath": "pickupLng",
+            "columnName": "pickupLng",
+            "affinity": "REAL",
+            "notNull": false
+          },
+          {
+            "fieldPath": "dropoffLat",
+            "columnName": "dropoffLat",
+            "affinity": "REAL",
+            "notNull": false
+          },
+          {
+            "fieldPath": "dropoffLng",
+            "columnName": "dropoffLng",
+            "affinity": "REAL",
+            "notNull": false
+          },
+          {
+            "fieldPath": "driverId",
+            "columnName": "driverId",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "driverRating",
+            "columnName": "driverRating",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "carYear",
+            "columnName": "carYear",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "duration",
+            "columnName": "duration",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "distance",
+            "columnName": "distance",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "cost",
+            "columnName": "cost",
+            "affinity": "REAL",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "id"
+          ],
+          "autoGenerate": false
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "ftsVersion": "FTS4",
+        "ftsOptions": {
+          "tokenizer": "simple",
+          "tokenizerArgs": [],
+          "contentTable": "trips",
+          "languageIdColumnName": "",
+          "matchInfo": "FTS4",
+          "notIndexedColumns": [],
+          "prefixSizes": [],
+          "preferredOrder": "ASC"
+        },
+        "contentSyncTriggers": [
+          "CREATE TRIGGER IF NOT EXISTS room_fts_content_sync_TripFTS_BEFORE_UPDATE BEFORE UPDATE ON `trips` BEGIN DELETE FROM `TripFTS` WHERE `docid`=OLD.`rowid`; END",
+          "CREATE TRIGGER IF NOT EXISTS room_fts_content_sync_TripFTS_BEFORE_DELETE BEFORE DELETE ON `trips` BEGIN DELETE FROM `TripFTS` WHERE `docid`=OLD.`rowid`; END",
+          "CREATE TRIGGER IF NOT EXISTS room_fts_content_sync_TripFTS_AFTER_UPDATE AFTER UPDATE ON `trips` BEGIN INSERT INTO `TripFTS`(`docid`, `pickupLocation`, `dropoffLocation`, `type`, `driverName`, `carMake`, `carModel`, `carNumber`) VALUES (NEW.`rowid`, NEW.`pickupLocation`, NEW.`dropoffLocation`, NEW.`type`, NEW.`driverName`, NEW.`carMake`, NEW.`carModel`, NEW.`carNumber`); END",
+          "CREATE TRIGGER IF NOT EXISTS room_fts_content_sync_TripFTS_AFTER_INSERT AFTER INSERT ON `trips` BEGIN INSERT INTO `TripFTS`(`docid`, `pickupLocation`, `dropoffLocation`, `type`, `driverName`, `carMake`, `carModel`, `carNumber`) VALUES (NEW.`rowid`, NEW.`pickupLocation`, NEW.`dropoffLocation`, NEW.`type`, NEW.`driverName`, NEW.`carMake`, NEW.`carModel`, NEW.`carNumber`); END"
+        ],
+        "tableName": "TripFTS",
+        "createSql": "CREATE VIRTUAL TABLE IF NOT EXISTS `${TABLE_NAME}` USING FTS4(`pickupLocation` TEXT, `dropoffLocation` TEXT, `type` TEXT, `driverName` TEXT, `carMake` TEXT, `carModel` TEXT, `carNumber` TEXT, content=`trips`)",
+        "fields": [
+          {
+            "fieldPath": "rowid",
+            "columnName": "rowid",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "pickupLocation",
+            "columnName": "pickupLocation",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "dropoffLocation",
+            "columnName": "dropoffLocation",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "type",
+            "columnName": "type",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "driverName",
+            "columnName": "driverName",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "carMake",
+            "columnName": "carMake",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "carModel",
+            "columnName": "carModel",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "carNumber",
+            "columnName": "carNumber",
+            "affinity": "TEXT",
+            "notNull": false
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "rowid"
+          ],
+          "autoGenerate": true
+        },
+        "indices": [],
+        "foreignKeys": []
+      }
+    ],
+    "views": [],
+    "setupQueries": [
+      "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'a97e5e6aa1f160ee5e03a396587fafb2')"
+    ]
+  }
+}

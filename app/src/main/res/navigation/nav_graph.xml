@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/dest_trip_search">
+
+    <fragment
+        android:id="@+id/dest_trip_search"
+        android:name="com.hava.trips.ui.search.TripSearchFragment"
+        android:label="TripSearchFragment"
+        tools:layout="@layout/trip_search_fragment">
+        <action
+            android:id="@+id/action_dest_trip_search_to_dest_trip_results"
+            app:destination="@id/dest_trip_results" />
+    </fragment>
+    <fragment
+        android:id="@+id/dest_trip_results"
+        android:name="com.hava.trips.ui.results.TripResultsFragment"
+        android:label="trip_results_fragment"
+        tools:layout="@layout/trip_results_fragment">
+        <action
+            android:id="@+id/action_dest_trip_results_to_dest_trip_details"
+            app:destination="@id/dest_trip_details" />
+        <argument
+            android:name="filterParams"
+            app:argType="com.hava.trips.data.models.FilterParams" />
+    </fragment>
+    <fragment
+        android:id="@+id/dest_trip_details"
+        android:name="com.hava.trips.ui.details.TripDetailsFragment"
+        android:label="trip_details_fragment"
+        tools:layout="@layout/trip_details_fragment">
+        <argument
+            android:name="tripId"
+            app:argType="long" />
+    </fragment>
+</navigation>

@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="avatar_dimensions">50dp</dimen>
+    <dimen name="divider_thickness">0.8dp</dimen>
+</resources>

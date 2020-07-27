@@ -1,0 +1,337 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import
+            alias="K"
+            type="com.hava.trips.utils.Constants" />
+
+        <import type="android.view.View" />
+
+        <variable
+            name="viewModel"
+            type="com.hava.trips.ui.details.TripDetailsViewModel" />
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".ui.details.TripDetailsFragment">
+
+        <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/appbar"
+            style="@style/Widget.HavaTrips.AppBarLayout"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:fitsSystemWindows="true"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <com.google.android.material.appbar.MaterialToolbar
+                android:id="@+id/toolbar"
+                style="@style/Widget.HavaTrips.Toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                app:title="@string/trips_details">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="?attr/actionBarSize"
+                    android:gravity="start|center_vertical"
+                    android:text="@string/trips_details" />
+
+            </com.google.android.material.appbar.MaterialToolbar>
+
+        </com.google.android.material.appbar.AppBarLayout>
+
+        <ProgressBar
+            android:id="@+id/progress_bar"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:indeterminate="true"
+            app:isVisible="@{viewModel.showProgressbar}"
+            app:layout_constraintBottom_toTopOf="@id/trip"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/appbar"
+            tools:visibility="visible" />
+
+        <ScrollView
+            android:id="@+id/trip"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toTopOf="@id/map"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/appbar">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="16dp">
+
+                <TextView
+                    android:id="@+id/date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:gravity="center_vertical"
+                    android:text="@{K.formattedDateAndOrTime(viewModel.trip.requestDate, K.DATE_TIME_FORMAT)}"
+                    android:textAppearance="?attr/textAppearanceBody1"
+                    app:layout_constraintBottom_toTopOf="@id/separator_1"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:text="8/26/2019 2:32 PM" />
+
+                <TextView
+                    android:id="@+id/cost"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:drawableStart="@drawable/ic_money"
+                    android:drawablePadding="4dp"
+                    android:gravity="center_vertical"
+                    android:text="@{@string/cost(K.numberInFixedDPs(viewModel.trip.cost), viewModel.trip.costUnit)}"
+                    android:textAppearance="?attr/textAppearanceHeadline6"
+                    app:layout_constraintBaseline_toBaselineOf="@+id/date"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    tools:text="340.00 KES" />
+
+                <View
+                    android:id="@+id/separator_1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/divider_thickness"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp"
+                    android:background="?attr/colorOnSurface"
+                    app:layout_constraintBottom_toTopOf="@id/source"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/date" />
+
+                <TextView
+                    android:id="@+id/source"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp"
+                    android:drawableStart="@drawable/ic_source_indicator"
+                    android:drawablePadding="4dp"
+                    android:gravity="center_vertical"
+                    android:text="@{viewModel.trip.pickupLocation}"
+                    app:drawableTint="@color/source_drawable_tint"
+                    app:layout_constraintBottom_toTopOf="@+id/destination"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/separator_1"
+                    tools:text="Mombasa Road, Nairobi" />
+
+                <TextView
+                    android:id="@+id/start_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:text="@{K.formattedDateAndOrTime(viewModel.trip.pickupDate, K.TIME_FORMAT)}"
+                    app:layout_constraintBaseline_toBaselineOf="@+id/source"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    tools:text="2:36 PM" />
+
+                <TextView
+                    android:id="@+id/destination"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp"
+                    android:drawableStart="@drawable/ic_destination_indicator"
+                    android:drawablePadding="4dp"
+                    android:gravity="center_vertical"
+                    android:text="@{viewModel.trip.dropoffLocation}"
+                    app:drawableTint="@color/destination_drawable_tint"
+                    app:layout_constraintBottom_toTopOf="@id/separator_2"
+                    app:layout_constraintStart_toStartOf="@id/source"
+                    app:layout_constraintTop_toBottomOf="@id/source"
+                    tools:text="Raphta Road, Nairobi" />
+
+                <TextView
+                    android:id="@+id/end_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:text="@{K.formattedDateAndOrTime(viewModel.trip.dropoffDate, K.TIME_FORMAT)}"
+                    app:layout_constraintBaseline_toBaselineOf="@+id/destination"
+                    app:layout_constraintEnd_toEndOf="@id/start_time"
+                    tools:text="2:52 PM" />
+
+                <View
+                    android:id="@+id/separator_2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/divider_thickness"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp"
+                    android:background="?attr/colorOnSurface"
+                    app:layout_constraintBottom_toTopOf="@+id/driver_info"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/destination" />
+
+                <LinearLayout
+                    android:id="@+id/car_info"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:gravity="center_horizontal"
+                    android:orientation="vertical"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/separator_2">
+
+                    <ImageView
+                        android:id="@+id/car_photo"
+                        android:layout_width="@dimen/avatar_dimensions"
+                        android:layout_height="@dimen/avatar_dimensions"
+                        android:layout_margin="8dp"
+                        android:adjustViewBounds="true"
+                        android:contentDescription="@string/content_desc_car_photo"
+                        android:scaleType="centerCrop"
+                        app:imageFromUrl="@{viewModel.trip.carPic}"
+                        app:placeholder="@{@drawable/ic_car_avatar}"
+                        app:srcCompat="@drawable/ic_car_avatar" />
+
+                    <TextView
+                        android:id="@+id/car_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="@{@string/car_identity(viewModel.trip.carMake, viewModel.trip.carModel)}"
+                        tools:text="Toyota Prius" />
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/distance_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="24dp"
+                    android:gravity="center_vertical"
+                    android:text="@string/distance_title"
+                    app:layout_constraintBottom_toTopOf="@id/duration_title"
+                    app:layout_constraintEnd_toStartOf="@id/distance"
+                    app:layout_constraintHorizontal_bias="0"
+                    app:layout_constraintStart_toEndOf="@id/car_info"
+                    app:layout_constraintTop_toTopOf="@+id/car_info" />
+
+                <TextView
+                    android:id="@+id/duration_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:text="@string/duration_title"
+                    app:layout_constraintBottom_toTopOf="@id/sub_total_title"
+                    app:layout_constraintEnd_toStartOf="@id/duration"
+                    app:layout_constraintHorizontal_bias="0"
+                    app:layout_constraintStart_toStartOf="@+id/distance_title"
+                    app:layout_constraintTop_toBottomOf="@id/distance_title" />
+
+                <TextView
+                    android:id="@+id/sub_total_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:text="@string/sub_total_title"
+                    app:layout_constraintBottom_toBottomOf="@id/car_info"
+                    app:layout_constraintEnd_toStartOf="@id/sub_total"
+                    app:layout_constraintHorizontal_bias="0"
+                    app:layout_constraintStart_toStartOf="@+id/duration_title"
+                    app:layout_constraintTop_toBottomOf="@id/duration_title" />
+
+                <TextView
+                    android:id="@+id/distance"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="24dp"
+                    android:gravity="center_vertical"
+                    android:text="@{@string/distance(K.getNumber(viewModel.trip.distance), viewModel.trip.distanceUnit)}"
+                    app:layout_constraintBaseline_toBaselineOf="@+id/distance_title"
+                    app:layout_constraintEnd_toStartOf="@id/driver_info"
+                    tools:text="10 km" />
+
+                <TextView
+                    android:id="@+id/duration"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:text="@{@string/distance(K.getNumber(viewModel.trip.duration), viewModel.trip.durationUnit)}"
+                    app:layout_constraintBaseline_toBaselineOf="@+id/duration_title"
+                    app:layout_constraintEnd_toEndOf="@+id/distance"
+                    tools:text="16 min" />
+
+                <TextView
+                    android:id="@+id/sub_total"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:text="@{@string/cost(K.numberInFixedDPs(viewModel.trip.cost), viewModel.trip.costUnit)}"
+                    android:textAppearance="?attr/textAppearanceBody2"
+                    app:layout_constraintBaseline_toBaselineOf="@+id/sub_total_title"
+                    app:layout_constraintEnd_toEndOf="@+id/duration"
+                    tools:text="314.00 KES" />
+
+                <LinearLayout
+                    android:id="@+id/driver_info"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="8dp"
+                    android:gravity="center_horizontal"
+                    android:orientation="vertical"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/separator_2">
+
+                    <TextView
+                        android:id="@+id/driver_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="@{viewModel.trip.driverName}"
+                        tools:text="James" />
+
+                    <ImageView
+                        android:id="@+id/driver_photo"
+                        android:layout_width="@dimen/avatar_dimensions"
+                        android:layout_height="@dimen/avatar_dimensions"
+                        android:layout_margin="8dp"
+                        android:adjustViewBounds="true"
+                        android:contentDescription="@string/content_desc_driver_photo"
+                        android:scaleType="centerCrop"
+                        app:imageFromUrl="@{viewModel.trip.driverPic}"
+                        app:placeholder="@{@drawable/ic_driver_avatar}"
+                        app:srcCompat="@drawable/ic_driver_avatar" />
+
+                    <RatingBar
+                        android:id="@+id/rating"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:rating="@{viewModel.trip.driverRating}"
+                        tools:rating="3" />
+                </LinearLayout>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </ScrollView>
+
+        <androidx.fragment.app.FragmentContainerView
+            android:id="@+id/map"
+            android:name="com.google.android.gms.maps.SupportMapFragment"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/trip"
+            tools:background="@android:color/darker_gray" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
