@@ -7,6 +7,7 @@ import androidx.navigation.NavDestination;
 import androidx.navigation.Navigation;
 import androidx.test.filters.MediumTest;
 
+import com.hava.trips.HiltTestActivity;
 import com.hava.trips.R;
 import com.hava.trips.di.modules.DataSourceModule;
 import com.hava.trips.utils.rules.IdlingResourceRule;
@@ -22,10 +23,13 @@ import dagger.hilt.android.testing.UninstallModules;
 
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
+import static androidx.test.espresso.assertion.ViewAssertions.matches;
+import static androidx.test.espresso.matcher.ViewMatchers.assertThat;
+import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withContentDescription;
 import static com.hava.trips.TripData.TRIP;
 import static com.hava.trips.utils.HiltContainer.launchFragmentInHiltContainer;
-import static org.hamcrest.MatcherAssert.assertThat;
+import static java.util.Objects.requireNonNull;
 import static org.hamcrest.Matchers.equalTo;
 
 @MediumTest
@@ -48,22 +52,19 @@ public class TripDetailsFragmentTest {
         navController = navigationControllerRule.navController;
 
         Bundle args = new TripDetailsFragmentArgs.Builder(TRIP.getId()).build().toBundle();
-        launchFragmentInHiltContainer(TripDetailsFragment.class, args, R.style.Theme_HavaTrips, model ->
-                Navigation.setViewNavController(model.requireView(), navController));
-        // Used to make Espresso work with DataBinding. Without it the tests will be flaky because
-        // DataBinding uses Choreographer class to synchronize its view updates hence using this to
-        // monitor a launched fragment in fragment scenario will make Espresso wait before doing
-        // additional checks
-        // TODO: Comment line below and provide an additional argument of FragmentScenario instance
-        // idlingResourceRule.dataBindingIdlingResource.monitorFragment(FragmentScenario);
+        launchFragmentInHiltContainer(HiltTestActivity.class, TripDetailsFragment.class, args, R.style.Theme_HavaTrips, model -> {
+            model.attachMapCallback = false;
+            Navigation.setViewNavController(model.requireView(), navController);
+            idlingResourceRule.dataBindingIdlingResource.monitorFragment(model);
+        });
     }
 
     @Test
     public void clicking_backArrowButton_navigatesToTripResultsFragment() {
-//        monitorFragment(dataBindingIdlingResource, FragmentScenario);
-        onView(withContentDescription(R.string.content_desc_navigate_back)).perform(click());
+        onView(withContentDescription(R.string.content_desc_navigate_back))
+                .check(matches(isDisplayed())).perform(click());
 
-        NavDestination destination = navController.getCurrentDestination();
-        if (destination != null) assertThat(destination.getId(), equalTo(R.id.dest_trip_results));
+        NavDestination destination = requireNonNull(navController.getCurrentDestination());
+        assertThat(destination.getId(), equalTo(R.id.dest_trip_results));
     }
 }

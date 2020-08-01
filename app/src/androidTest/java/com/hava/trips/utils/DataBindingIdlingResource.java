@@ -16,6 +16,12 @@ import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
+/**
+ * Used to make Espresso work with DataBinding. Without it the tests will be flaky because
+ * DataBinding uses Choreographer class to synchronize its view updates hence using this to
+ * monitor a launched fragment in fragment scenario will make Espresso wait before doing
+ * additional checks
+ */
 public class DataBindingIdlingResource implements IdlingResource {
     // Give it a unique id to work around an Espresso bug where you cannot register/unregister
     // an idling resource with the same name.
@@ -67,14 +73,22 @@ public class DataBindingIdlingResource implements IdlingResource {
      * Sets the activity from an [ActivityScenario] to be used from [DataBindingIdlingResource].
      */
     public <T extends FragmentActivity> void monitorActivity(ActivityScenario<T> activityScenario) {
-        activityScenario.onActivity(fragmentActivity -> activity = fragmentActivity);
+        activityScenario.onActivity(this::monitorActivity);
     }
 
     /**
      * Sets the fragment from a [FragmentScenario] to be used from [DataBindingIdlingResource].
      */
     public <T extends Fragment> void monitorFragment(FragmentScenario<T> fragmentScenario) {
-        fragmentScenario.onFragment(fragment -> activity = fragment.requireActivity());
+        fragmentScenario.onFragment(this::monitorFragment);
+    }
+
+    public <T extends FragmentActivity> void monitorActivity(T activity) {
+        this.activity = activity;
+    }
+
+    public <T extends Fragment> void monitorFragment(T fragment) {
+        activity = fragment.requireActivity();
     }
 
     @Nullable

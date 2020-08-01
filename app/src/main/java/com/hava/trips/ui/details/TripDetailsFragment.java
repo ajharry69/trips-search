@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.VisibleForTesting;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -29,6 +30,9 @@ public class TripDetailsFragment extends BaseFragment implements OnMapReadyCallb
     private TripDetailsViewModel mViewModel;
     private TripDetailsFragmentBinding binding;
 
+    @VisibleForTesting
+    boolean attachMapCallback = true;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
@@ -42,7 +46,7 @@ public class TripDetailsFragment extends BaseFragment implements OnMapReadyCallb
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
-        if (mapFragment != null) mapFragment.getMapAsync(this);
+        if (mapFragment != null && attachMapCallback) mapFragment.getMapAsync(this);
     }
 
     @Override

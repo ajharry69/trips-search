@@ -7,6 +7,7 @@ import androidx.navigation.NavDestination;
 import androidx.navigation.Navigation;
 import androidx.test.filters.MediumTest;
 
+import com.hava.trips.HiltTestActivity;
 import com.hava.trips.R;
 import com.hava.trips.data.models.FilterParams;
 import com.hava.trips.di.modules.DataSourceModule;
@@ -17,13 +18,17 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 
+import java.util.Objects;
+
 import dagger.hilt.android.testing.HiltAndroidRule;
 import dagger.hilt.android.testing.HiltAndroidTest;
 import dagger.hilt.android.testing.UninstallModules;
 
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
+import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.contrib.RecyclerViewActions.actionOnItemAtPosition;
+import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withContentDescription;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static com.hava.trips.utils.HiltContainer.launchFragmentInHiltContainer;
@@ -51,30 +56,27 @@ public class TripResultsFragmentTest {
         navController = navigationControllerRule.navController;
 
         Bundle args = new TripResultsFragmentArgs.Builder(FilterParams.DEFAULT).build().toBundle();
-        launchFragmentInHiltContainer(TripResultsFragment.class, args, R.style.Theme_HavaTrips, model ->
-                Navigation.setViewNavController(model.requireView(), navController));
-        // Used to make Espresso work with DataBinding. Without it the tests will be flaky because
-        // DataBinding uses Choreographer class to synchronize its view updates hence using this to
-        // monitor a launched fragment in fragment scenario will make Espresso wait before doing
-        // additional checks
-        // TODO: Comment line below and provide an additional argument of FragmentScenario instance
-        // idlingResourceRule.dataBindingIdlingResource.monitorFragment(FragmentScenario);
+        launchFragmentInHiltContainer(HiltTestActivity.class, TripResultsFragment.class, args, R.style.Theme_HavaTrips, model -> {
+            Navigation.setViewNavController(model.requireView(), navController);
+            idlingResourceRule.dataBindingIdlingResource.monitorFragment(model);
+        });
     }
 
     @Test
     public void clicking_backArrowButton_navigatesToTripSearchFragment() {
-        onView(withContentDescription(R.string.content_desc_navigate_back)).perform(click());
+        onView(withContentDescription(R.string.content_desc_navigate_back))
+                .check(matches(isDisplayed())).perform(click());
 
-        NavDestination destination = navController.getCurrentDestination();
-        if (destination != null) assertThat(destination.getId(), equalTo(R.id.dest_trip_search));
+        NavDestination destination = Objects.requireNonNull(navController.getCurrentDestination());
+        assertThat(destination.getId(), equalTo(R.id.dest_trip_search));
     }
 
     @Test
     public void clicking_tripItem_navigatesToTripDetailsFragment() {
         onView(withId(R.id.trips)).perform(actionOnItemAtPosition(0, click()));
 
-        NavDestination destination = navController.getCurrentDestination();
-        if (destination != null) assertThat(destination.getId(), equalTo(R.id.dest_trip_details));
+        NavDestination destination = Objects.requireNonNull(navController.getCurrentDestination());
+        assertThat(destination.getId(), equalTo(R.id.dest_trip_details));
     }
 
     @Test
@@ -82,7 +84,7 @@ public class TripResultsFragmentTest {
         onView(withId(R.id.trips))
                 .perform(actionOnItemAtPosition(0, clickRecyclerViewItemWithId(R.id.options)));
 
-        NavDestination destination = navController.getCurrentDestination();
-        if (destination != null) assertThat(destination.getId(), equalTo(R.id.dest_trip_details));
+        NavDestination destination = Objects.requireNonNull(navController.getCurrentDestination());
+        assertThat(destination.getId(), equalTo(R.id.dest_trip_details));
     }
 }

@@ -21,7 +21,7 @@ public class FakeDataSourceModule {
     @Singleton
     @LocalTripDataSource
     ITripDataSource provideTripLocalDataSource() {
-        return new FakeTripDataSource();
+        return new FakeTripDataSource(TripData.remoteTrips().toArray(new Trip[]{}));
     }
 
     @Provides

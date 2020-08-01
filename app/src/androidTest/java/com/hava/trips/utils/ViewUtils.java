@@ -24,6 +24,7 @@ public class ViewUtils {
             @Override
             public void perform(UiController uiController, View view) {
                 view.findViewById(viewId).performClick();
+//                view.findViewById(viewId).performClick();
             }
         };
     }
