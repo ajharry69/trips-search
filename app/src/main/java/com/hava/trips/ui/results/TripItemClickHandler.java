@@ -8,8 +8,6 @@ import static com.hava.trips.ui.results.TripResultsFragmentDirections.actionDest
 
 public class TripItemClickHandler {
     public static void onOptionsViewClicked(View button, Long tripId) {
-        button.setOnClickListener(view -> {
-            Navigation.findNavController(view).navigate(actionDestTripResultsToDestTripDetails(tripId));
-        });
+        Navigation.findNavController(button).navigate(actionDestTripResultsToDestTripDetails(tripId));
     }
 }
