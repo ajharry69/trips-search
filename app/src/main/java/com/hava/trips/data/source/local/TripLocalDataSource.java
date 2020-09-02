@@ -30,14 +30,8 @@ public class TripLocalDataSource implements ITripDataSource {
 
     @NonNull
     @Override
-    public Observable<List<Trip>> getObservableTrips() {
-        return dao.getObservableTrips();
-    }
-
-    @NonNull
-    @Override
     public Observable<List<Trip>> getObservableTrips(String query) {
-        return query == null || query.isEmpty() ? getObservableTrips() : dao.getObservableTrips(query);
+        return query == null || query.isEmpty() ? dao.getObservableTrips() : dao.getObservableTrips(query);
     }
 
     @NonNull

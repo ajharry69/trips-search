@@ -35,15 +35,9 @@ public class FakeTripDataSource implements ITripDataSource {
 
     @NonNull
     @Override
-    public Observable<List<Trip>> getObservableTrips() {
-        return Observable.just(Arrays.asList(trips.toArray(new Trip[]{})));
-    }
-
-    @NonNull
-    @Override
     public Observable<List<Trip>> getObservableTrips(String query) {
-        if (trips.isEmpty()) getObservableTrips();
-        return Observable.just(filtered(Arrays.asList(trips.toArray(new Trip[]{})), query));
+        List<Trip> trips = Arrays.asList(this.trips.toArray(new Trip[]{}));
+        return Observable.just(trips.isEmpty() ? trips : filtered(trips, query));
     }
 
     @NonNull

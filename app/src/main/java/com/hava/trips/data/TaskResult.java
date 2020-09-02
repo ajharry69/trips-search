@@ -66,6 +66,10 @@ public abstract class TaskResult<T> {
     public static final class Error<T> extends TaskResult<T> {
         private final Throwable error;
 
+        public Error(String message) {
+            this(new RuntimeException(message));
+        }
+
         public Error(@NonNull Throwable error) {
             this.error = error;
         }

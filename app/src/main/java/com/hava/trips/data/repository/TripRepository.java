@@ -23,6 +23,8 @@ import io.reactivex.ObservableSource;
 import io.reactivex.Scheduler;
 import io.reactivex.functions.Function;
 
+import static com.hava.trips.data.Source.LOCAL;
+
 public class TripRepository implements ITripRepository {
     private final ITripDataSource local, remote;
     private final Scheduler ioScheduler;
@@ -37,18 +39,18 @@ public class TripRepository implements ITripRepository {
     @NonNull
     @Override
     public Observable<List<Trip>> getObservableTrips(@NonNull FilterParams filter, Source source) {
-        Observable<List<Trip>> listObservable;
+        Observable<List<Trip>> observable;
         switch (source) {
             case REMOTE:
-                listObservable = remote.getObservableTrips(filter.getKeyword());
+                observable = remote.getObservableTrips(filter.getKeyword());
                 break;
             case LOCAL:
-                listObservable = local.getObservableTrips(filter.getKeyword());
+                observable = local.getObservableTrips(filter.getKeyword());
                 break;
             default:
-                listObservable = getObservableTrips(filter, Source.LOCAL);
+                observable = getObservableTrips(filter, LOCAL);
         }
-        return listObservable.subscribeOn(ioScheduler).map(trips -> {
+        return observable.subscribeOn(ioScheduler).map(trips -> {
             Set<Trip> _trips = filterTrips(trips, filter);
             return Arrays.asList(_trips.toArray(new Trip[]{}));
         });
@@ -56,26 +58,18 @@ public class TripRepository implements ITripRepository {
 
     @Override
     public Observable<Trip> getObservableTrip(@NonNull Long tripId, @NotNull Source source) {
-        Observable<Trip> tripObservable;
+        Observable<Trip> observable;
         switch (source) {
             case REMOTE:
-                tripObservable = remote.getObservableTrip(tripId, source);
+                observable = remote.getObservableTrip(tripId, source);
                 break;
             case LOCAL:
-                tripObservable = local.getObservableTrip(tripId, source);
+                observable = local.getObservableTrip(tripId, source);
                 break;
             default:
-                tripObservable = getObservableTrip(tripId, Source.LOCAL);
+                observable = getObservableTrip(tripId, LOCAL);
         }
-        return tripObservable;
-    }
-
-    @NonNull
-    @Override
-    public Observable<List<Trip>> getObservableTrips() {
-        return remote.getObservableTrips().subscribeOn(ioScheduler)
-                .flatMap((Function<List<Trip>, ObservableSource<List<Trip>>>) trips ->
-                        local.saveTrips(trips.toArray(new Trip[]{})));
+        return observable;
     }
 
     @NonNull

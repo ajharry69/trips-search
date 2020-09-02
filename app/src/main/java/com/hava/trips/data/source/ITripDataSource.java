@@ -14,13 +14,14 @@ public interface ITripDataSource {
     Observable<Trip> getObservableTrip(@NonNull Long tripId, @NonNull Source source);
 
     @NonNull
-    Observable<List<Trip>> getObservableTrips();
+    default Observable<List<Trip>> getObservableTrips() {
+        return getObservableTrips(null);
+    }
 
     @NonNull
     Observable<List<Trip>> getObservableTrips(String query);
 
     /**
-     *
      * @param trips trips to be saved
      * @return an Observable of saved trips(passed as parameters)
      */

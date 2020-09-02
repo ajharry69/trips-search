@@ -39,20 +39,13 @@ public class TripRemoteDataSource implements ITripDataSource {
 
     @NonNull
     @Override
-    public Observable<List<Trip>> getObservableTrips() {
-        return service.getTrips().map(tripRemote -> {
+    public Observable<List<Trip>> getObservableTrips(String query) {
+        if (tripList.isEmpty()) return service.getTrips().map(tripRemote -> {
             List<Trip> trips = tripRemote.getTrips();
             tripList.clear();
             tripList.addAll(trips);
             return trips;
-        });
-    }
-
-    @NonNull
-    @Override
-    public Observable<List<Trip>> getObservableTrips(String query) {
-        if (tripList.isEmpty()) return getObservableTrips()
-                .map(trips -> filtered(trips, query));
+        }).map(trips -> filtered(trips, query));
         return Observable.just(filtered(tripList, query));
     }
 

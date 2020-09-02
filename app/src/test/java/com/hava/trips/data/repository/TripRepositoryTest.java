@@ -47,7 +47,7 @@ public class TripRepositoryTest {
 
         // When
         TestObserver<Trip> observer = repository.getObservableTrip(trip.getId(), REMOTE)
-                .subscribeOn(testScheduler).observeOn(testScheduler).test();
+                .observeOn(testScheduler).test();
 
         // Then
         observer.assertValueCount(1).assertResult(trip);
@@ -71,7 +71,7 @@ public class TripRepositoryTest {
 
         // When
         TestObserver<List<Trip>> observer = repository.saveTrips(trip)
-                .subscribeOn(testScheduler).observeOn(testScheduler).test();
+                .observeOn(testScheduler).test();
 
         // Then
         int localTripsCount = localDataSource.getTripsCount();
@@ -105,7 +105,7 @@ public class TripRepositoryTest {
     @Test
     public void getObservableTrips_cachesAndReturnsTheReturnedRemoteTripRecords() {
         TestObserver<List<Trip>> observer = repository.getObservableTrips()
-                .subscribeOn(testScheduler)
+                
                 .observeOn(testScheduler)
                 .test();
 
@@ -172,13 +172,11 @@ public class TripRepositoryTest {
                 .setTime(R.id.time_10_to_20) // filters out trip1
                 .build();
         TestObserver<List<Trip>> testObserver = repository.getObservableTrips(filterParams)
-                .subscribeOn(testScheduler).observeOn(testScheduler).test();
+                .observeOn(testScheduler).test();
 
         List<Trip> filteredTrips = new ArrayList<>();
         filteredTrips.add(trip);
-        testObserver.assertNoErrors().assertValue(filteredTrips);
-
-        testObserver.dispose();
+        testObserver.assertNoErrors().assertValue(filteredTrips).dispose();
     }
 
     /**
@@ -203,14 +201,13 @@ public class TripRepositoryTest {
         repository.saveTrips(trip);
 
         TestObserver<List<Trip>> observer = repository.getObservableTrips(searchQuery)
-                .subscribeOn(testScheduler).observeOn(testScheduler).test();
+                .observeOn(testScheduler).test();
 
         List<Trip> expectedSearchResult = new ArrayList<>();
         expectedSearchResult.add(trip);
 
         // Then - search results contains only 1 expected element
-        observer.assertValueCount(1).assertValue(expectedSearchResult);
-        observer.dispose();
+        observer.assertValueCount(1).assertValue(expectedSearchResult).dispose();
     }
 
     private void assertUnexistingTripFetch(Source local) {
@@ -219,10 +216,9 @@ public class TripRepositoryTest {
 
         // When
         TestObserver<Trip> observer = repository.getObservableTrip(tripId, local)
-                .subscribeOn(testScheduler).observeOn(testScheduler).test();
+                .observeOn(testScheduler).test();
 
         // Then
-        observer.assertError(NullPointerException.class).assertValueCount(0);
-        observer.dispose();
+        observer.assertError(NullPointerException.class).assertValueCount(0).dispose();
     }
 }

@@ -88,7 +88,7 @@ public class TripResultsViewModel extends ViewModel {
      */
     @VisibleForTesting
     void getTrips() {
-        showProgressbar.setValue(true);
+        setShowProgressbar(true);
         remoteTripsFetchResult.setValue(new TaskResult.Loading<>());
         loadingStatusMessage.setValue(R.string.status_fetching_remote_trips);
         // TODO: Test status before...
@@ -101,14 +101,14 @@ public class TripResultsViewModel extends ViewModel {
 
                     @Override
                     public void onNext(List<Trip> trips) {
-                        showProgressbar.postValue(false);
+                        setShowProgressbar(false);
                         remoteTripsFetchResult.postValue(new TaskResult.Success<>(trips));
                     }
 
                     @Override
                     public void onError(Throwable e) {
                         loadingStatusMessage.postValue(R.string.status_trips_empty);
-                        showProgressbar.postValue(false);
+                        setShowProgressbar(false);
                         remoteTripsFetchResult.postValue(new TaskResult.Error<>(e));
                     }
 
@@ -120,6 +120,10 @@ public class TripResultsViewModel extends ViewModel {
 
     public LiveData<Integer> getFilteredResultsCount() {
         return filteredResultsCount;
+    }
+
+    public void setShowProgressbar(boolean show) {
+        this.showProgressbar.setValue(show);
     }
 
     public LiveData<Boolean> getShowProgressbar() {
