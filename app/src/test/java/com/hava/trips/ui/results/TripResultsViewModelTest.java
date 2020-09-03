@@ -43,7 +43,6 @@ public class TripResultsViewModelTest {
         TripRepository repository = new TripRepository(
                 new FakeTripDataSource(), new FakeTripDataSource(trips), scheduler);
         viewModel = createViewModel(repository);
-// new TripSearchViewModel(new SavedStateHandle())
     }
 
     private TripResultsViewModel createViewModel(TripRepository repository) {
