@@ -1,4 +1,4 @@
-# HAVA Trips
+# Trips Search
 ## Requirements
 1. Android Studio 4.0.1
 2. At least JDK 8
